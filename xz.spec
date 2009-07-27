@@ -1,7 +1,7 @@
 Summary:	LZMA compression utilities
 Name:		xz
 Version:	4.999.8
-Release:	0.7.beta%{?dist}
+Release:	0.8.beta%{?dist}
 License:	LGPLv2+
 Group:		Applications/File
 Source0:	http://tukaani.org/%{name}/%{name}-%{version}beta.tar.gz
@@ -102,6 +102,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*
 
 %changelog
+* Mon Jul 27 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 4.999.8-0.8.beta
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
+
 * Fri Jul 17 2009 Bill Nottingham <notting@redhat.com> 4.999.8-0.7.beta
 - tweak summary
 - add %%check section (<tibbs@math.uh.edu>)
