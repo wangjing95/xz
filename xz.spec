@@ -1,10 +1,13 @@
+%define git_date 20090804
+
 Summary:	LZMA compression utilities
 Name:		xz
 Version:	4.999.8
-Release:	0.8.beta%{?dist}
+Release:	0.9.beta.%{git_date}git%{?dist}
 License:	LGPLv2+
 Group:		Applications/File
-Source0:	http://tukaani.org/%{name}/%{name}-%{version}beta.tar.gz
+# source created as "make dist" in checked out GIT tree
+Source0:	http://tukaani.org/%{name}/%{name}-%{version}beta.%{git_date}git.tar.gz
 URL:		http://tukaani.org/%{name}/
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:	%{name}-libs = %{version}-%{release}
@@ -67,6 +70,7 @@ rm -rf %{buildroot}
 make install DESTDIR=%{buildroot} INSTALL="%{__install} -p"
 rm -f %{buildroot}/%{_libdir}/*.a
 rm -f %{buildroot}/%{_libdir}/*.la
+rm -rf %{buildroot}/%{_docdir}/%{name}
 
 %check
 LD_LIBRARY_PATH=$PWD/src/liblzma/.libs make check
@@ -102,6 +106,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*
 
 %changelog
+* Tue Aug 04 2009 Jindrich Novy <jnovy@redhat.com> 4.999.8-0.9.beta.20090804git
+- update to the latest GIT snapshot
+
 * Mon Jul 27 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 4.999.8-0.8.beta
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
 
