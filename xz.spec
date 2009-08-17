@@ -1,9 +1,9 @@
-%define git_date 20090804
+%define git_date 20090817
 
 Summary:	LZMA compression utilities
 Name:		xz
 Version:	4.999.8
-Release:	0.9.beta.%{git_date}git%{?dist}
+Release:	0.10.beta.%{git_date}git%{?dist}
 License:	LGPLv2+
 Group:		Applications/File
 # source created as "make dist" in checked out GIT tree
@@ -106,6 +106,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*
 
 %changelog
+* Mon Aug 17 2009 Jindrich Novy <jnovy@redhat.com> 4.999.8-0.10.beta.20090817git
+- sync with upstream because of #517806
+
 * Tue Aug 04 2009 Jindrich Novy <jnovy@redhat.com> 4.999.8-0.9.beta.20090804git
 - update to the latest GIT snapshot
 
