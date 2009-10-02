@@ -1,11 +1,13 @@
+%define git_date 20091002
+
 Summary:	LZMA compression utilities
 Name:		xz
 Version:	4.999.9
-Release:	0.1.beta%{?dist}
+Release:	0.1.beta.%{git_date}git%{?dist}
 License:	LGPLv2+
 Group:		Applications/File
 # source created as "make dist" in checked out GIT tree
-Source0:	http://tukaani.org/%{name}/%{name}-%{version}beta.tar.xz
+Source0:	http://tukaani.org/%{name}/%{name}-%{version}beta.%{git_date}git.tar.gz
 URL:		http://tukaani.org/%{name}/
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:	%{name}-libs = %{version}-%{release}
@@ -104,6 +106,10 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*
 
 %changelog
+* Fri Oct 02 2009 Jindrich Novy <jnovy@redhat.com> 4.999.9-0.1.20091002.beta
+- sync with upstream to generate the same archives on machines with different
+  endianess
+
 * Fri Aug 28 2009 Jindrich Novy <jnovy@redhat.com> 4.999.9-0.1.beta
 - update to 4.999.9beta
 
