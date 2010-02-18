@@ -3,7 +3,7 @@
 Summary:	LZMA compression utilities
 Name:		xz
 Version:	4.999.9
-Release:	0.1.beta.%{git_date}git%{?dist}
+Release:	0.2.beta.%{git_date}git%{?dist}
 License:	LGPLv2+
 Group:		Applications/File
 # source created as "make dist" in checked out GIT tree
@@ -86,6 +86,7 @@ rm -rf %{buildroot}
 %defattr(-,root,root,-)
 %doc AUTHORS README THANKS COPYING.* ChangeLog 
 %{_bindir}/*xz*
+%{_mandir}/man1/*xz*
 
 %files libs
 %defattr(-,root,root,-)
@@ -103,9 +104,12 @@ rm -rf %{buildroot}
 %files lzma-compat
 %defattr(-,root,root,-)
 %{_bindir}/*lz*
-%{_mandir}/man1/*
+%{_mandir}/man1/*lz*
 
 %changelog
+* Thu Feb 18 2010 Jindrich Novy <jnovy@redhat.com> 4.999.9-0.2.20091007.beta
+- move xz man pages to main package, leave lzma ones where they belong (#566484)
+
 * Wed Oct 07 2009 Jindrich Novy <jnovy@redhat.com> 4.999.9-0.1.20091007.beta
 - sync with upstream again
 
