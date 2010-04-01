@@ -1,4 +1,4 @@
-%define git_date 20091007
+%define git_date 20100401
 
 Summary:	LZMA compression utilities
 Name:		xz
@@ -68,9 +68,10 @@ make %{?_smp_mflags}
 %install
 rm -rf %{buildroot}
 make install DESTDIR=%{buildroot} INSTALL="%{__install} -p"
-rm -f %{buildroot}/%{_libdir}/*.a
-rm -f %{buildroot}/%{_libdir}/*.la
-rm -rf %{buildroot}/%{_docdir}/%{name}
+rm -f %{buildroot}%{_libdir}/*.a
+rm -f %{buildroot}%{_libdir}/*.la
+rm -rf %{buildroot}%{_docdir}/%{name}
+rm -rf %{buildroot}%{_datadir}/locale
 
 %check
 LD_LIBRARY_PATH=$PWD/src/liblzma/.libs make check
@@ -107,6 +108,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*lz*
 
 %changelog
+* Thu Apr 01 2010 Jindrich Novy <jnovy@redhat.com> 4.999.9-0.2.20100401.beta
+- sync with upstream (#578925)
+
 * Thu Feb 18 2010 Jindrich Novy <jnovy@redhat.com> 4.999.9-0.2.20091007.beta
 - move xz man pages to main package, leave lzma ones where they belong (#566484)
 
