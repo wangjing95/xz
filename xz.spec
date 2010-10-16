@@ -1,13 +1,12 @@
-%define git_date 20100401
-
+%define git_hash acbc
 Summary:	LZMA compression utilities
 Name:		xz
 Version:	4.999.9
-Release:	0.2.beta.%{git_date}git%{?dist}
+Release:	0.3.beta.212.g%{git_hash}%{?dist}
 License:	LGPLv2+
 Group:		Applications/File
 # source created as "make dist" in checked out GIT tree
-Source0:	http://tukaani.org/%{name}/%{name}-%{version}beta.%{git_date}git.tar.xz
+Source0:	http://tukaani.org/%{name}/%{name}-%{version}beta-212-g%{git_hash}.tar.gz
 URL:		http://tukaani.org/%{name}/
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:	%{name}-libs = %{version}-%{release}
@@ -54,7 +53,7 @@ The lzma-compat package contains compatibility links for older
 commands that deal with the older LZMA format.
 
 %prep
-%setup -q -n %{name}-%{version}beta
+%setup -q -n %{name}-%{version}beta-212-g%{git_hash}
 
 %build
 CFLAGS="%{optflags} -D_FILE_OFFSET_BITS=64" \
@@ -108,6 +107,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*lz*
 
 %changelog
+* Sat Oct 16 2010 Jindrich Novy <jnovy@redhat.com> 4.999.9-0.3.beta.212.gacbc
+- update to latest git snapshot
+
 * Thu Apr 01 2010 Jindrich Novy <jnovy@redhat.com> 4.999.9-0.2.20100401.beta
 - sync with upstream (#578925)
 
