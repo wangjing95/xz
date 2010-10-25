@@ -1,12 +1,11 @@
-%define git_hash acbc
 Summary:	LZMA compression utilities
 Name:		xz
-Version:	4.999.9
-Release:	0.3.beta.212.g%{git_hash}%{?dist}
+Version:	5.0.0
+Release:	1%{?dist}
 License:	LGPLv2+
 Group:		Applications/File
 # source created as "make dist" in checked out GIT tree
-Source0:	http://tukaani.org/%{name}/%{name}-%{version}beta-212-g%{git_hash}.tar.gz
+Source0:	http://tukaani.org/%{name}/%{name}-%{version}.tar.xz
 URL:		http://tukaani.org/%{name}/
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:	%{name}-libs = %{version}-%{release}
@@ -45,15 +44,15 @@ Group:		Development/Libraries
 # lz{grep,diff,more} are GPLv2+. Other binaries are LGPLv2+
 License:	GPLv2+ and LGPLv2+
 Requires:	%{name} = %{version}-%{release}
-Obsoletes:	lzma < 5
-Provides:	lzma = 5
+Obsoletes:	lzma < %{version}
+Provides:	lzma = %{version}
 
 %description  lzma-compat
 The lzma-compat package contains compatibility links for older
 commands that deal with the older LZMA format.
 
 %prep
-%setup -q -n %{name}-%{version}beta-212-g%{git_hash}
+%setup -q
 
 %build
 CFLAGS="%{optflags} -D_FILE_OFFSET_BITS=64" \
@@ -84,13 +83,13 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc AUTHORS README THANKS COPYING.* ChangeLog 
+%doc AUTHORS COPYING* ChangeLog NEWS README THANKS TODO
 %{_bindir}/*xz*
 %{_mandir}/man1/*xz*
 
 %files libs
 %defattr(-,root,root,-)
-%doc COPYING.*
+%doc COPYING*
 %{_libdir}/lib*.so.*
 
 %files devel
@@ -107,6 +106,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*lz*
 
 %changelog
+* Mon Oct 25 2010 Jindrich Novy <jnovy@redhat.com> 5.0.0-1
+- update to the new upstream release
+
 * Sat Oct 16 2010 Jindrich Novy <jnovy@redhat.com> 4.999.9-0.3.beta.212.gacbc
 - update to latest git snapshot
 
