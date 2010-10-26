@@ -3,7 +3,7 @@
 Summary:	LZMA compression utilities
 Name:		xz
 Version:	5.0.0
-Release:	3%{?dist}
+Release:	4%{?dist}
 License:	LGPLv2+
 Group:		Applications/File
 # official upstream release
@@ -39,7 +39,7 @@ License:	LGPLv2+
 
 %description 	compat-libs
 Compatibility libraries for decoding files compressed with LZMA or XZ utils.
-This particular package ships libraries from xz-%{compat_ver} as of 1st of April 2010.
+This particular package ships libraries from %{compat_ver} as of 1st of April 2010.
 
 %package 	devel
 Summary:	Devel libraries & headers for liblzma
@@ -101,6 +101,10 @@ rm -rf %{buildroot}
 
 %postun libs -p /sbin/ldconfig
 
+%post compat-libs -p /sbin/ldconfig
+
+%postun compat-libs -p /sbin/ldconfig
+
 %files
 %defattr(-,root,root,-)
 %doc AUTHORS COPYING* ChangeLog NEWS README THANKS TODO
@@ -131,6 +135,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*lz*
 
 %changelog
+* Tue Oct 26 2010 Jindrich Novy <jnovy@redhat.com> 5.0.0-4
+- call ldconfig for compat-libs and fix description
+
 * Mon Oct 25 2010 Jindrich Novy <jnovy@redhat.com> 5.0.0-3
 - introduce compat-libs subpackage with older soname to
   resolve problems with soname bump and for packages requiring
