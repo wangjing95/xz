@@ -1,11 +1,15 @@
+%global compat_ver xz-4.999.9beta
+
 Summary:	LZMA compression utilities
 Name:		xz
 Version:	5.0.0
-Release:	2%{?dist}
+Release:	3%{?dist}
 License:	LGPLv2+
 Group:		Applications/File
-# source created as "make dist" in checked out GIT tree
+# official upstream release
 Source0:	http://tukaani.org/%{name}/%{name}-%{version}.tar.xz
+# source created as "make dist" in checked out GIT tree
+Source1:	%{compat_ver}.20100401git.tar.xz
 URL:		http://tukaani.org/%{name}/
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:	%{name}-libs = %{version}-%{release}
@@ -28,6 +32,15 @@ License:	LGPLv2+
 %description 	libs
 Libraries for decoding files compressed with LZMA or XZ utils.
 
+%package 	compat-libs
+Summary:	Compatibility libraries for decoding LZMA compression
+Group:		System Environment/Libraries
+License:	LGPLv2+
+
+%description 	compat-libs
+Compatibility libraries for decoding files compressed with LZMA or XZ utils.
+This particular package ships libraries from xz-%{compat_ver} as of 1st of April 2010.
+
 %package 	devel
 Summary:	Devel libraries & headers for liblzma
 Group:		Development/Libraries
@@ -35,7 +48,7 @@ License:	LGPLv2+
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	pkgconfig
 
-%description  devel
+%description	devel
 Devel libraries and headers for liblzma.
 
 %package 	lzma-compat
@@ -47,12 +60,12 @@ Requires:	%{name} = %{version}-%{release}
 Obsoletes:	lzma < %{version}
 Provides:	lzma = %{version}
 
-%description  lzma-compat
+%description	lzma-compat
 The lzma-compat package contains compatibility links for older
 commands that deal with the older LZMA format.
 
 %prep
-%setup -q
+%setup -q -a1
 
 %build
 CFLAGS="%{optflags} -D_FILE_OFFSET_BITS=64" \
@@ -60,8 +73,14 @@ CXXFLAGS="%{optflags} -D_FILE_OFFSET_BITS=64" \
 %configure --disable-static
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
-
 make %{?_smp_mflags}
+
+pushd %{compat_ver}
+%configure --disable-static
+sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
+sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
+make %{?_smp_mflags}
+popd
 
 %install
 rm -rf %{buildroot}
@@ -70,6 +89,7 @@ rm -f %{buildroot}%{_libdir}/*.a
 rm -f %{buildroot}%{_libdir}/*.la
 rm -rf %{buildroot}%{_docdir}/%{name}
 rm -rf %{buildroot}%{_datadir}/locale
+cp -r %{compat_ver}/src/liblzma/.libs/liblzma.so.0* %{buildroot}%{_libdir}
 
 %check
 LD_LIBRARY_PATH=$PWD/src/liblzma/.libs make check
@@ -90,7 +110,12 @@ rm -rf %{buildroot}
 %files libs
 %defattr(-,root,root,-)
 %doc COPYING*
-%{_libdir}/lib*.so.*
+%{_libdir}/lib*.so.5*
+
+%files compat-libs
+%defattr(-,root,root,-)
+%doc COPYING*
+%{_libdir}/lib*.so.0*
 
 %files devel
 %defattr(-,root,root,-)
@@ -106,6 +131,11 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*lz*
 
 %changelog
+* Mon Oct 25 2010 Jindrich Novy <jnovy@redhat.com> 5.0.0-3
+- introduce compat-libs subpackage with older soname to
+  resolve problems with soname bump and for packages requiring
+  older xz-4.999.9beta
+
 * Mon Oct 25 2010 Jindrich Novy <jnovy@redhat.com> 5.0.0-2
 - rebuild
 
