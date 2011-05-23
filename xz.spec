@@ -2,7 +2,7 @@
 
 Summary:	LZMA compression utilities
 Name:		xz
-Version:	5.0.2
+Version:	5.0.3
 Release:	1%{?dist}
 License:	LGPLv2+
 Group:		Applications/File
@@ -135,6 +135,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*lz*
 
 %changelog
+* Mon May 23 2011 Jindrich Novy <jnovy@redhat.com> 5.0.3-1
+- update to 5.0.3
+
 * Mon Apr 04 2011 Jindrich Novy <jnovy@redhat.com> 5.0.2-1
 - update to 5.0.2
 
