@@ -3,13 +3,13 @@
 Summary:	LZMA compression utilities
 Name:		xz
 Version:	5.0.3
-Release:	1%{?dist}
+Release:	2%{?dist}
 License:	LGPLv2+
 Group:		Applications/File
 # official upstream release
-Source0:	http://tukaani.org/%{name}/%{name}-%{version}.tar.xz
+Source0:	http://tukaani.org/%{name}/%{name}-%{version}.tar.bz2
 # source created as "make dist" in checked out GIT tree
-Source1:	%{compat_ver}.20100401git.tar.xz
+Source1:	%{compat_ver}.20100401git.tar.bz2
 URL:		http://tukaani.org/%{name}/
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:	%{name}-libs = %{version}-%{release}
@@ -135,6 +135,10 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*lz*
 
 %changelog
+* Mon Jun 20 2011 Jindrich Novy <jnovy@redhat.com> 5.0.3-2
+- better to have upstream tarballs in different formats than XZ
+  to allow bootstrapping (#714765)
+
 * Mon May 23 2011 Jindrich Novy <jnovy@redhat.com> 5.0.3-1
 - update to 5.0.3
 
