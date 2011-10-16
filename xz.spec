@@ -2,12 +2,12 @@
 
 Summary:	LZMA compression utilities
 Name:		xz
-Version:	5.0.3
-Release:	2%{?dist}
+Version:	5.1.1
+Release:	1alpha%{?dist}
 License:	LGPLv2+
 Group:		Applications/File
 # official upstream release
-Source0:	http://tukaani.org/%{name}/%{name}-%{version}.tar.bz2
+Source0:	http://tukaani.org/%{name}/%{name}-%{version}alpha.tar.gz
 # source created as "make dist" in checked out GIT tree
 Source1:	%{compat_ver}.20100401git.tar.bz2
 URL:		http://tukaani.org/%{name}/
@@ -65,7 +65,7 @@ The lzma-compat package contains compatibility links for older
 commands that deal with the older LZMA format.
 
 %prep
-%setup -q -a1
+%setup -q -a1 -n %{name}-%{version}alpha
 
 %build
 CFLAGS="%{optflags} -D_FILE_OFFSET_BITS=64" \
@@ -135,6 +135,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*lz*
 
 %changelog
+* Sun Oct 16 2011 Jindrich Novy <jnovy@redhat.com> 5.1.1alpha-1
+- update to 5.1.1alpha
+
 * Mon Jun 20 2011 Jindrich Novy <jnovy@redhat.com> 5.0.3-2
 - better to have upstream tarballs in different formats than XZ
   to allow bootstrapping (#714765)
