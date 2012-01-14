@@ -3,7 +3,7 @@
 Summary:	LZMA compression utilities
 Name:		xz
 Version:	5.1.1
-Release:	1alpha%{?dist}
+Release:	2alpha%{?dist}
 License:	LGPLv2+
 Group:		Applications/File
 # official upstream release
@@ -135,6 +135,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*lz*
 
 %changelog
+* Sat Jan 14 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 5.1.1-2alpha
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
+
 * Sun Oct 16 2011 Jindrich Novy <jnovy@redhat.com> 5.1.1alpha-1
 - update to 5.1.1alpha
 
