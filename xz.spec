@@ -3,7 +3,7 @@
 Summary:	LZMA compression utilities
 Name:		xz
 Version:	5.1.2
-Release:	3alpha%{?dist}
+Release:	4alpha%{?dist}
 License:	LGPLv2+
 Group:		Applications/File
 # official upstream release
@@ -66,6 +66,9 @@ commands that deal with the older LZMA format.
 
 %prep
 %setup -q -a1 -n %{name}-%{version}alpha
+for i in `find . -name config.sub`; do
+  perl -pi -e "s/ppc64-\*/ppc64-\* \| ppc64p7-\*/" $i
+done
 
 %build
 CFLAGS="%{optflags} -D_FILE_OFFSET_BITS=64" \
@@ -135,6 +138,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*lz*
 
 %changelog
+* Thu Feb 21 2013 Karsten Hopp <karsten@redhat.com> 5.1.2-4alpha
+- add support for ppc64p7 arch (Power7 optimized)
+
 * Fri Feb 15 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 5.1.2-3alpha
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 
