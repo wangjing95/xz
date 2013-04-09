@@ -21,7 +21,7 @@ Patch0:		xz-5.1.2alpha-man-page-day.patch
 
 # fix 'xzgrep -h' to behave as expected
 # ~> upstream (5019413a0)
-# ~> #948533
+# ~> #850898
 Patch1:		xz-5.1.2alpha-xzgrep-and-h-option.patch
 
 %description
@@ -153,7 +153,7 @@ rm -rf %{buildroot}
 %changelog
 * Tue Apr 09 2013 Pavel Raiskup <praiskup@redhat.com> - 5.1.2-5alpha
 - fix manual page inconsistencies with help output (private #948533)
-- enable/fix the 'xzgrep -h' (#850898)
+- enable/fix the 'xzgrep -h' (private #850898)
 
 * Thu Feb 21 2013 Karsten Hopp <karsten@redhat.com> 5.1.2-4alpha
 - add support for ppc64p7 arch (Power7 optimized)
