@@ -3,7 +3,7 @@
 Summary:	LZMA compression utilities
 Name:		xz
 Version:	5.1.2
-Release:	4alpha%{?dist}
+Release:	5alpha%{?dist}
 License:	LGPLv2+
 Group:		Applications/File
 # official upstream release
@@ -13,6 +13,11 @@ Source1:	%{compat_ver}.20100401git.tar.bz2
 URL:		http://tukaani.org/%{name}/
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:	%{name}-libs = %{version}-%{release}
+
+# partly upstream/partly not (yet?)
+# ~> proposal: http://www.mail-archive.com/xz-devel@tukaani.org/msg00153.html
+# ~> #948533
+Patch0:		xz-5.1.2alpha-man-page-day.patch
 
 %description
 XZ Utils are an attempt to make LZMA compression easy to use on free (as in
@@ -66,6 +71,8 @@ commands that deal with the older LZMA format.
 
 %prep
 %setup -q -a1 -n %{name}-%{version}alpha
+%patch0  -p1 -b .man-page-day
+
 for i in `find . -name config.sub`; do
   perl -pi -e "s/ppc64-\*/ppc64-\* \| ppc64p7-\*/" $i
 done
@@ -138,6 +145,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*lz*
 
 %changelog
+* Tue Apr 09 2013 Pavel Raiskup <praiskup@redhat.com> - 5.1.2-5alpha
+- fix manual page inconsistencies with help output (private #948533)
+
 * Thu Feb 21 2013 Karsten Hopp <karsten@redhat.com> 5.1.2-4alpha
 - add support for ppc64p7 arch (Power7 optimized)
 
