@@ -19,6 +19,11 @@ Requires:	%{name}-libs = %{version}-%{release}
 # ~> #948533
 Patch0:		xz-5.1.2alpha-man-page-day.patch
 
+# fix 'xzgrep -h' to behave as expected
+# ~> upstream (5019413a0)
+# ~> #948533
+Patch1:		xz-5.1.2alpha-xzgrep-and-h-option.patch
+
 %description
 XZ Utils are an attempt to make LZMA compression easy to use on free (as in
 freedom) operating systems. This is achieved by providing tools and libraries
@@ -72,6 +77,7 @@ commands that deal with the older LZMA format.
 %prep
 %setup -q -a1 -n %{name}-%{version}alpha
 %patch0  -p1 -b .man-page-day
+%patch1  -p1 -b .xzgrep-and-h-option
 
 for i in `find . -name config.sub`; do
   perl -pi -e "s/ppc64-\*/ppc64-\* \| ppc64p7-\*/" $i
@@ -147,6 +153,7 @@ rm -rf %{buildroot}
 %changelog
 * Tue Apr 09 2013 Pavel Raiskup <praiskup@redhat.com> - 5.1.2-5alpha
 - fix manual page inconsistencies with help output (private #948533)
+- enable/fix the 'xzgrep -h' (#850898)
 
 * Thu Feb 21 2013 Karsten Hopp <karsten@redhat.com> 5.1.2-4alpha
 - add support for ppc64p7 arch (Power7 optimized)
