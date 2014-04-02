@@ -24,6 +24,11 @@ Patch0:		xz-5.1.2alpha-man-page-day.patch
 # ~> #850898
 Patch1:		xz-5.1.2alpha-xzgrep-and-h-option.patch
 
+# fix less version checking
+# ~> upstream (db5c1817fa, 9e6dabcf22)
+# ~> #1015924
+Patch2:		xz-5.1.2alpha-less-version-check.patch
+
 %description
 XZ Utils are an attempt to make LZMA compression easy to use on free (as in
 freedom) operating systems. This is achieved by providing tools and libraries
@@ -78,6 +83,7 @@ commands that deal with the older LZMA format.
 %setup -q -a1 -n %{name}-%{version}alpha
 %patch0  -p1 -b .man-page-day
 %patch1  -p1 -b .xzgrep-and-h-option
+%patch2  -p1 -b .less-version-check
 
 for i in `find . -name config.sub`; do
   perl -pi -e "s/ppc64-\*/ppc64-\* \| ppc64p7-\*/" $i
@@ -157,6 +163,7 @@ rm -rf %{buildroot}
 %changelog
 * Wed Apr 02 2014 Pavel Raiskup <praiskup@redhat.com> - 5.1.2-8alpha
 - add _isa requirements where appropriate
+- better check the version of less binary (#1015924)
 
 * Fri Jan 10 2014 Pavel Raiskup <praiskup@redhat.com> - 5.1.2-7alpha
 - build with -O3 on ppc64 (private #1051078)
