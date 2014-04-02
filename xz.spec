@@ -3,7 +3,7 @@
 Summary:	LZMA compression utilities
 Name:		xz
 Version:	5.1.2
-Release:	7alpha%{?dist}
+Release:	8alpha%{?dist}
 License:	LGPLv2+
 Group:		Applications/File
 # official upstream release
@@ -12,7 +12,7 @@ Source0:	http://tukaani.org/%{name}/%{name}-%{version}alpha.tar.gz
 Source1:	%{compat_ver}.20100401git.tar.bz2
 URL:		http://tukaani.org/%{name}/
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires:	%{name}-libs = %{version}-%{release}
+Requires:	%{name}-libs%{?_isa} = %{version}-%{release}
 
 # partly upstream/partly not (yet?)
 # ~> proposal: http://www.mail-archive.com/xz-devel@tukaani.org/msg00153.html
@@ -55,7 +55,7 @@ This particular package ships libraries from %{compat_ver} as of 1st of April 20
 Summary:	Devel libraries & headers for liblzma
 Group:		Development/Libraries
 License:	LGPLv2+
-Requires:	%{name}-libs = %{version}-%{release}
+Requires:	%{name}-libs%{?_isa} = %{version}-%{release}
 Requires:	pkgconfig
 
 %description	devel
@@ -155,6 +155,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*lz*
 
 %changelog
+* Wed Apr 02 2014 Pavel Raiskup <praiskup@redhat.com> - 5.1.2-8alpha
+- add _isa requirements where appropriate
+
 * Fri Jan 10 2014 Pavel Raiskup <praiskup@redhat.com> - 5.1.2-7alpha
 - build with -O3 on ppc64 (private #1051078)
 
