@@ -3,7 +3,7 @@
 Summary:	LZMA compression utilities
 Name:		xz
 Version:	5.1.2
-Release:	8alpha%{?dist}
+Release:	9alpha%{?dist}
 License:	LGPLv2+
 Group:		Applications/File
 # official upstream release
@@ -46,6 +46,15 @@ License:	LGPLv2+
 
 %description 	libs
 Libraries for decoding files compressed with LZMA or XZ utils.
+
+%package 	static
+Summary:	Statically linked library for decoding LZMA compression
+Group:		System Environment/Libraries
+License:	LGPLv2+
+
+%description 	static
+Statically linked library for decoding files compressed with LZMA or
+XZ utils.  Most users should *not* install this.
 
 %package 	compat-libs
 Summary:	Compatibility libraries for decoding LZMA compression
@@ -96,13 +105,13 @@ CFLAGS="%{optflags} -D_FILE_OFFSET_BITS=64"
 %endif
 export CFLAGS
 
-%configure --disable-static
+%configure
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 make %{?_smp_mflags}
 
 pushd %{compat_ver}
-%configure --disable-static
+%configure
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 make %{?_smp_mflags}
@@ -111,7 +120,6 @@ popd
 %install
 rm -rf %{buildroot}
 make install DESTDIR=%{buildroot} INSTALL="%{__install} -p"
-rm -f %{buildroot}%{_libdir}/*.a
 rm -f %{buildroot}%{_libdir}/*.la
 rm -rf %{buildroot}%{_docdir}/%{name}
 rm -rf %{buildroot}%{_datadir}/locale
@@ -142,6 +150,11 @@ rm -rf %{buildroot}
 %doc COPYING*
 %{_libdir}/lib*.so.5*
 
+%files static
+%defattr(-,root,root,-)
+%doc COPYING*
+%{_libdir}/liblzma.a
+
 %files compat-libs
 %defattr(-,root,root,-)
 %doc COPYING*
@@ -161,6 +174,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*lz*
 
 %changelog
+* Fri May 16 2014 Richard W.M. Jones <rjones@redhat.com> - 5.1.2-9alpha
+- Add a -static subpackage (see RHBZ#547011).
+
 * Wed Apr 02 2014 Pavel Raiskup <praiskup@redhat.com> - 5.1.2-8alpha
 - add _isa requirements where appropriate
 - better check the version of less binary (#1015924)
