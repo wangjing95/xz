@@ -3,7 +3,7 @@
 Summary:	LZMA compression utilities
 Name:		xz
 Version:	5.1.2
-Release:	9alpha%{?dist}
+Release:	10alpha%{?dist}
 License:	LGPLv2+
 Group:		Applications/File
 # official upstream release
@@ -141,7 +141,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc AUTHORS COPYING* ChangeLog NEWS README THANKS TODO
+%doc AUTHORS COPYING* NEWS README THANKS TODO
 %{_bindir}/*xz*
 %{_mandir}/man1/*xz*
 
@@ -174,6 +174,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*lz*
 
 %changelog
+* Sat May 31 2014 Peter Robinson <pbrobinson@fedoraproject.org> 5.1.2-10alpha
+- Drop ChangeLog, it's big and the excitement is summarised in NEWS
+
 * Fri May 16 2014 Richard W.M. Jones <rjones@redhat.com> - 5.1.2-9alpha
 - Add a -static subpackage (see RHBZ#547011).
 
