@@ -3,7 +3,7 @@
 Summary:	LZMA compression utilities
 Name:		xz
 Version:	5.1.2
-Release:	10alpha%{?dist}
+Release:	11alpha%{?dist}
 License:	LGPLv2+
 Group:		Applications/File
 # official upstream release
@@ -174,6 +174,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*lz*
 
 %changelog
+* Sun Jun 08 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 5.1.2-11alpha
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
+
 * Sat May 31 2014 Peter Robinson <pbrobinson@fedoraproject.org> 5.1.2-10alpha
 - Drop ChangeLog, it's big and the excitement is summarised in NEWS
 
