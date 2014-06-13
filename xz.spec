@@ -3,7 +3,7 @@
 Summary:	LZMA compression utilities
 Name:		xz
 Version:	5.1.2
-Release:	11alpha%{?dist}
+Release:	12alpha%{?dist}
 License:	LGPLv2+
 Group:		Applications/File
 # official upstream release
@@ -28,6 +28,13 @@ Patch1:		xz-5.1.2alpha-xzgrep-and-h-option.patch
 # ~> upstream (db5c1817fa, 9e6dabcf22)
 # ~> #1015924
 Patch2:		xz-5.1.2alpha-less-version-check.patch
+
+# xzgrep: return 0 when at least one file matches (+ test)
+# ~> upstream (ceca37901783)
+# ~> #1109122
+Patch3:		xz-5.1.2alpha-xzgrep-exit.patch
+Patch4:		xz-5.1.2alpha-xzgrep-exit-test.patch
+
 
 %description
 XZ Utils are an attempt to make LZMA compression easy to use on free (as in
@@ -93,6 +100,8 @@ commands that deal with the older LZMA format.
 %patch0  -p1 -b .man-page-day
 %patch1  -p1 -b .xzgrep-and-h-option
 %patch2  -p1 -b .less-version-check
+%patch3  -p1 -b .xzgrep-exit-status
+%patch4  -p1 -b .xzgrep-exit-status-test
 
 for i in `find . -name config.sub`; do
   perl -pi -e "s/ppc64-\*/ppc64-\* \| ppc64p7-\*/" $i
@@ -174,6 +183,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*lz*
 
 %changelog
+* Fri Jun 13 2014 Pavel Raiskup <praiskup@redhat.com> - 5.1.2-12alpha
+- xzgrep: return 0 when at least one file matches (#1109122)
+
 * Sun Jun 08 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 5.1.2-11alpha
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
