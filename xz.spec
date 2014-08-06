@@ -3,7 +3,7 @@
 Summary:	LZMA compression utilities
 Name:		xz
 Version:	5.1.2
-Release:	12alpha%{?dist}
+Release:	13alpha%{?dist}
 License:	LGPLv2+
 Group:		Applications/File
 # official upstream release
@@ -150,24 +150,29 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc AUTHORS COPYING* NEWS README THANKS TODO
+%{!?_licensedir:%global license %%doc}
+%license COPYING*
+%doc AUTHORS NEWS README THANKS TODO
 %{_bindir}/*xz*
 %{_mandir}/man1/*xz*
 
 %files libs
 %defattr(-,root,root,-)
-%doc COPYING*
+%{!?_licensedir:%global license %%doc}
+%license COPYING
 %{_libdir}/lib*.so.5*
 
 %files static
 %defattr(-,root,root,-)
-%doc COPYING*
+%{!?_licensedir:%global license %%doc}
+%license COPYING
 %{_libdir}/liblzma.a
 
 %files compat-libs
 %defattr(-,root,root,-)
-%doc COPYING*
-%{_libdir}/lib*.so.0*
+%{!?_licensedir:%global license %%doc}
+%license COPYING*
+%doc COPYING* %{_libdir}/lib*.so.0*
 
 %files devel
 %defattr(-,root,root,-)
@@ -183,6 +188,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*lz*
 
 %changelog
+* Wed Aug  6 2014 Tom Callaway <spot@fedoraproject.org> - 5.1.2-13alpha
+- fix license handling
+
 * Fri Jun 13 2014 Pavel Raiskup <praiskup@redhat.com> - 5.1.2-12alpha
 - xzgrep: return 0 when at least one file matches (#1109122)
 
