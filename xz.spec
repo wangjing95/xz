@@ -159,20 +159,20 @@ rm -rf %{buildroot}
 %files libs
 %defattr(-,root,root,-)
 %{!?_licensedir:%global license %%doc}
-%license COPYING
+%license COPYING*
 %{_libdir}/lib*.so.5*
 
 %files static
 %defattr(-,root,root,-)
 %{!?_licensedir:%global license %%doc}
-%license COPYING
+%license COPYING*
 %{_libdir}/liblzma.a
 
 %files compat-libs
 %defattr(-,root,root,-)
 %{!?_licensedir:%global license %%doc}
 %license COPYING*
-%doc COPYING* %{_libdir}/lib*.so.0*
+%{_libdir}/lib*.so.0*
 
 %files devel
 %defattr(-,root,root,-)
