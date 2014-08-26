@@ -3,13 +3,17 @@
 Summary:	LZMA compression utilities
 Name:		xz
 Version:	5.1.2
-Release:	14alpha%{?dist}
+Release:	15alpha%{?dist}
 License:	LGPLv2+
 Group:		Applications/File
 # official upstream release
 Source0:	http://tukaani.org/%{name}/%{name}-%{version}alpha.tar.gz
 # source created as "make dist" in checked out GIT tree
 Source1:	%{compat_ver}.20100401git.tar.bz2
+
+Source100:	colorxzgrep.sh
+Source101:	colorxzgrep.csh
+
 URL:		http://tukaani.org/%{name}/
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:	%{name}-libs%{?_isa} = %{version}-%{release}
@@ -134,6 +138,11 @@ rm -rf %{buildroot}%{_docdir}/%{name}
 rm -rf %{buildroot}%{_datadir}/locale
 cp -r %{compat_ver}/src/liblzma/.libs/liblzma.so.0* %{buildroot}%{_libdir}
 
+%global profiledir %{_sysconfdir}/profile.d
+mkdir -p %{buildroot}%{profiledir}
+install -p -m 644 %{SOURCE100} %{buildroot}%{profiledir}
+install -p -m 644 %{SOURCE101} %{buildroot}%{profiledir}
+
 %check
 LD_LIBRARY_PATH=$PWD/src/liblzma/.libs make check
 
@@ -155,6 +164,7 @@ rm -rf %{buildroot}
 %doc AUTHORS NEWS README THANKS TODO
 %{_bindir}/*xz*
 %{_mandir}/man1/*xz*
+%{profiledir}/*
 
 %files libs
 %defattr(-,root,root,-)
@@ -188,6 +198,9 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*lz*
 
 %changelog
+* Tue Aug 26 2014 Pavel Raiskup <praiskup@redhat.com> - 5.1.2-15alpha
+- xz*grep's output is colored iff grep's is (#1034846)
+
 * Mon Aug 18 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 5.1.2-14alpha
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
 
