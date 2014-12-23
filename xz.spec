@@ -2,12 +2,12 @@
 
 Summary:	LZMA compression utilities
 Name:		xz
-Version:	5.1.2
-Release:	15alpha%{?dist}
+Version:	5.2.0
+Release:	1%{?dist}
 License:	LGPLv2+
 Group:		Applications/File
 # official upstream release
-Source0:	http://tukaani.org/%{name}/%{name}-%{version}alpha.tar.gz
+Source0:	http://tukaani.org/%{name}/%{name}-%{version}.tar.xz
 # source created as "make dist" in checked out GIT tree
 Source1:	%{compat_ver}.20100401git.tar.bz2
 
@@ -17,27 +17,6 @@ Source101:	colorxzgrep.csh
 URL:		http://tukaani.org/%{name}/
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:	%{name}-libs%{?_isa} = %{version}-%{release}
-
-# partly upstream/partly not (yet?)
-# ~> proposal: http://www.mail-archive.com/xz-devel@tukaani.org/msg00153.html
-# ~> #948533
-Patch0:		xz-5.1.2alpha-man-page-day.patch
-
-# fix 'xzgrep -h' to behave as expected
-# ~> upstream (5019413a0)
-# ~> #850898
-Patch1:		xz-5.1.2alpha-xzgrep-and-h-option.patch
-
-# fix less version checking
-# ~> upstream (db5c1817fa, 9e6dabcf22)
-# ~> #1015924
-Patch2:		xz-5.1.2alpha-less-version-check.patch
-
-# xzgrep: return 0 when at least one file matches (+ test)
-# ~> upstream (ceca37901783)
-# ~> #1109122
-Patch3:		xz-5.1.2alpha-xzgrep-exit.patch
-Patch4:		xz-5.1.2alpha-xzgrep-exit-test.patch
 
 
 %description
@@ -100,12 +79,7 @@ The lzma-compat package contains compatibility links for older
 commands that deal with the older LZMA format.
 
 %prep
-%setup -q -a1 -n %{name}-%{version}alpha
-%patch0  -p1 -b .man-page-day
-%patch1  -p1 -b .xzgrep-and-h-option
-%patch2  -p1 -b .less-version-check
-%patch3  -p1 -b .xzgrep-exit-status
-%patch4  -p1 -b .xzgrep-exit-status-test
+%setup -q -a1
 
 for i in `find . -name config.sub`; do
   perl -pi -e "s/ppc64-\*/ppc64-\* \| ppc64p7-\*/" $i
@@ -198,6 +172,10 @@ rm -rf %{buildroot}
 %{_mandir}/man1/*lz*
 
 %changelog
+* Tue Dec 23 2014 Pavel Raiskup <praiskup@redhat.com> - 5.2.0-1
+- rebase per upstream release notes (#1023718)
+  http://www.mail-archive.com/xz-devel@tukaani.org/msg00216.html
+
 * Tue Aug 26 2014 Pavel Raiskup <praiskup@redhat.com> - 5.1.2-15alpha
 - xz*grep's output is colored iff grep's is (#1034846)
 
