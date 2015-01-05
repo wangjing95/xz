@@ -15,7 +15,6 @@ Source100:	colorxzgrep.sh
 Source101:	colorxzgrep.csh
 
 URL:		http://tukaani.org/%{name}/
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires:	%{name}-libs%{?_isa} = %{version}-%{release}
 
 
@@ -70,7 +69,7 @@ Summary:	Older LZMA format compatibility binaries
 Group:		Development/Libraries
 # lz{grep,diff,more} are GPLv2+. Other binaries are LGPLv2+
 License:	GPLv2+ and LGPLv2+
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}%{?_isa} = %{version}-%{release}
 Obsoletes:	lzma < %{version}
 Provides:	lzma = %{version}
 
@@ -105,23 +104,21 @@ make %{?_smp_mflags}
 popd
 
 %install
-rm -rf %{buildroot}
-make install DESTDIR=%{buildroot} INSTALL="%{__install} -p"
+make install DESTDIR=%{buildroot}
 rm -f %{buildroot}%{_libdir}/*.la
-rm -rf %{buildroot}%{_docdir}/%{name}
-rm -rf %{buildroot}%{_datadir}/locale
+
 cp -r %{compat_ver}/src/liblzma/.libs/liblzma.so.0* %{buildroot}%{_libdir}
 
+# xzgrep colorization
 %global profiledir %{_sysconfdir}/profile.d
 mkdir -p %{buildroot}%{profiledir}
 install -p -m 644 %{SOURCE100} %{buildroot}%{profiledir}
 install -p -m 644 %{SOURCE101} %{buildroot}%{profiledir}
 
+%find_lang %name
+
 %check
 LD_LIBRARY_PATH=$PWD/src/liblzma/.libs make check
-
-%clean
-rm -rf %{buildroot}
 
 %post libs -p /sbin/ldconfig
 
@@ -131,35 +128,30 @@ rm -rf %{buildroot}
 
 %postun compat-libs -p /sbin/ldconfig
 
-%files
-%defattr(-,root,root,-)
+%files -f %{name}.lang
 %{!?_licensedir:%global license %%doc}
 %license COPYING*
-%doc AUTHORS NEWS README THANKS TODO
+%doc %{_docdir}
 %{_bindir}/*xz*
 %{_mandir}/man1/*xz*
 %{profiledir}/*
 
 %files libs
-%defattr(-,root,root,-)
 %{!?_licensedir:%global license %%doc}
 %license COPYING*
 %{_libdir}/lib*.so.5*
 
 %files static
-%defattr(-,root,root,-)
 %{!?_licensedir:%global license %%doc}
 %license COPYING*
 %{_libdir}/liblzma.a
 
 %files compat-libs
-%defattr(-,root,root,-)
 %{!?_licensedir:%global license %%doc}
 %license COPYING*
 %{_libdir}/lib*.so.0*
 
 %files devel
-%defattr(-,root,root,-)
 %dir %{_includedir}/lzma
 %{_includedir}/lzma/*.h
 %{_includedir}/lzma.h
@@ -167,7 +159,6 @@ rm -rf %{buildroot}
 %{_libdir}/pkgconfig/liblzma.pc
 
 %files lzma-compat
-%defattr(-,root,root,-)
 %{_bindir}/*lz*
 %{_mandir}/man1/*lz*
 
@@ -175,6 +166,7 @@ rm -rf %{buildroot}
 * Tue Dec 23 2014 Pavel Raiskup <praiskup@redhat.com> - 5.2.0-1
 - rebase per upstream release notes (#1023718)
   http://www.mail-archive.com/xz-devel@tukaani.org/msg00216.html
+- fedora-review fixes
 
 * Tue Aug 26 2014 Pavel Raiskup <praiskup@redhat.com> - 5.1.2-15alpha
 - xz*grep's output is colored iff grep's is (#1034846)
