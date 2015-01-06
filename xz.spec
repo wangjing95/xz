@@ -1,10 +1,17 @@
 %global compat_ver xz-4.999.9beta
 
+# Not needed for f21+ and probably RHEL8+
+%{!?_licensedir:%global license %%doc}
+
 Summary:	LZMA compression utilities
 Name:		xz
 Version:	5.2.0
 Release:	1%{?dist}
-License:	LGPLv2+
+
+# Scripts xz{grep,diff,less,more} and symlinks (copied from gzip) are
+# GPLv2+, binaries are Public Domain (linked against LGPL getopt_long but its
+# OK), documentation is Public Domain.
+License:	GPLv2+ and Public Domain
 Group:		Applications/File
 # official upstream release
 Source0:	http://tukaani.org/%{name}/%{name}-%{version}.tar.xz
@@ -31,7 +38,7 @@ decompression speed fast.
 %package 	libs
 Summary:	Libraries for decoding LZMA compression
 Group:		System Environment/Libraries
-License:	LGPLv2+
+License:	Public Domain
 
 %description 	libs
 Libraries for decoding files compressed with LZMA or XZ utils.
@@ -39,7 +46,7 @@ Libraries for decoding files compressed with LZMA or XZ utils.
 %package 	static
 Summary:	Statically linked library for decoding LZMA compression
 Group:		System Environment/Libraries
-License:	LGPLv2+
+License:	Public Domain
 
 %description 	static
 Statically linked library for decoding files compressed with LZMA or
@@ -48,7 +55,7 @@ XZ utils.  Most users should *not* install this.
 %package 	compat-libs
 Summary:	Compatibility libraries for decoding LZMA compression
 Group:		System Environment/Libraries
-License:	LGPLv2+
+License:	Public Domain
 
 %description 	compat-libs
 Compatibility libraries for decoding files compressed with LZMA or XZ utils.
@@ -57,7 +64,7 @@ This particular package ships libraries from %{compat_ver} as of 1st of April 20
 %package 	devel
 Summary:	Devel libraries & headers for liblzma
 Group:		Development/Libraries
-License:	LGPLv2+
+License:	Public Domain
 Requires:	%{name}-libs%{?_isa} = %{version}-%{release}
 Requires:	pkgconfig
 
@@ -67,8 +74,8 @@ Devel libraries and headers for liblzma.
 %package 	lzma-compat
 Summary:	Older LZMA format compatibility binaries
 Group:		Development/Libraries
-# lz{grep,diff,more} are GPLv2+. Other binaries are LGPLv2+
-License:	GPLv2+ and LGPLv2+
+# Just a set of symlinks to 'xz' + two Public Domain binaries.
+License:	Public Domain
 Requires:	%{name}%{?_isa} = %{version}-%{release}
 Obsoletes:	lzma < %{version}
 Provides:	lzma = %{version}
@@ -129,26 +136,23 @@ LD_LIBRARY_PATH=$PWD/src/liblzma/.libs make check
 %postun compat-libs -p /sbin/ldconfig
 
 %files -f %{name}.lang
-%{!?_licensedir:%global license %%doc}
-%license COPYING*
-%doc %{_docdir}
+%license %{_pkgdocdir}/COPYING*
+%doc %{_pkgdocdir}
+%exclude %_pkgdocdir/examples*
 %{_bindir}/*xz*
 %{_mandir}/man1/*xz*
 %{profiledir}/*
 
 %files libs
-%{!?_licensedir:%global license %%doc}
-%license COPYING*
+%license %{_pkgdocdir}/COPYING
 %{_libdir}/lib*.so.5*
 
 %files static
-%{!?_licensedir:%global license %%doc}
-%license COPYING*
+%license %{_pkgdocdir}/COPYING
 %{_libdir}/liblzma.a
 
 %files compat-libs
-%{!?_licensedir:%global license %%doc}
-%license COPYING*
+%license %{_pkgdocdir}/COPYING
 %{_libdir}/lib*.so.0*
 
 %files devel
@@ -157,6 +161,7 @@ LD_LIBRARY_PATH=$PWD/src/liblzma/.libs make check
 %{_includedir}/lzma.h
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/liblzma.pc
+%doc %_pkgdocdir/examples*
 
 %files lzma-compat
 %{_bindir}/*lz*
@@ -166,7 +171,7 @@ LD_LIBRARY_PATH=$PWD/src/liblzma/.libs make check
 * Tue Dec 23 2014 Pavel Raiskup <praiskup@redhat.com> - 5.2.0-1
 - rebase per upstream release notes (#1023718)
   http://www.mail-archive.com/xz-devel@tukaani.org/msg00216.html
-- fedora-review fixes
+- fedora-review fixes, documentation/license fixes in spec
 
 * Tue Aug 26 2014 Pavel Raiskup <praiskup@redhat.com> - 5.1.2-15alpha
 - xz*grep's output is colored iff grep's is (#1034846)
