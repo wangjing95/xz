@@ -1,12 +1,10 @@
-%global compat_ver xz-4.999.9beta
-
 # Not needed for f21+ and probably RHEL8+
 %{!?_licensedir:%global license %%doc}
 
 Summary:	LZMA compression utilities
 Name:		xz
 Version:	5.2.1
-Release:	2%{?dist}
+Release:	3%{?dist}
 
 # Scripts xz{grep,diff,less,more} and symlinks (copied from gzip) are
 # GPLv2+, binaries are Public Domain (linked against LGPL getopt_long but its
@@ -15,8 +13,6 @@ License:	GPLv2+ and Public Domain
 Group:		Applications/File
 # official upstream release
 Source0:	http://tukaani.org/%{name}/%{name}-%{version}.tar.xz
-# source created as "make dist" in checked out GIT tree
-Source1:	%{compat_ver}.20100401git.tar.bz2
 
 Source100:	colorxzgrep.sh
 Source101:	colorxzgrep.csh
@@ -44,6 +40,7 @@ decompression speed fast.
 Summary:	Libraries for decoding LZMA compression
 Group:		System Environment/Libraries
 License:	Public Domain
+Obsoletes:	%{name}-compat-libs < %{version}-%{release}
 
 %description 	libs
 Libraries for decoding files compressed with LZMA or XZ utils.
@@ -56,15 +53,6 @@ License:	Public Domain
 %description 	static
 Statically linked library for decoding files compressed with LZMA or
 XZ utils.  Most users should *not* install this.
-
-%package 	compat-libs
-Summary:	Compatibility libraries for decoding LZMA compression
-Group:		System Environment/Libraries
-License:	Public Domain
-
-%description 	compat-libs
-Compatibility libraries for decoding files compressed with LZMA or XZ utils.
-This particular package ships libraries from %{compat_ver} as of 1st of April 2010.
 
 %package 	devel
 Summary:	Devel libraries & headers for liblzma
@@ -90,7 +78,7 @@ The lzma-compat package contains compatibility links for older
 commands that deal with the older LZMA format.
 
 %prep
-%setup -q -a1
+%setup -q
 
 for i in `find . -name config.sub`; do
   perl -pi -e "s/ppc64-\*/ppc64-\* \| ppc64p7-\*/" $i
@@ -108,18 +96,9 @@ sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 make %{?_smp_mflags}
 
-pushd %{compat_ver}
-%configure
-sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
-sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
-make %{?_smp_mflags}
-popd
-
 %install
 make install DESTDIR=%{buildroot}
 rm -f %{buildroot}%{_libdir}/*.la
-
-cp -r %{compat_ver}/src/liblzma/.libs/liblzma.so.0* %{buildroot}%{_libdir}
 
 # xzgrep colorization
 %global profiledir %{_sysconfdir}/profile.d
@@ -135,10 +114,6 @@ LD_LIBRARY_PATH=$PWD/src/liblzma/.libs make check
 %post libs -p /sbin/ldconfig
 
 %postun libs -p /sbin/ldconfig
-
-%post compat-libs -p /sbin/ldconfig
-
-%postun compat-libs -p /sbin/ldconfig
 
 %files -f %{name}.lang
 %license %{_pkgdocdir}/COPYING*
@@ -156,10 +131,6 @@ LD_LIBRARY_PATH=$PWD/src/liblzma/.libs make check
 %license %{_pkgdocdir}/COPYING
 %{_libdir}/liblzma.a
 
-%files compat-libs
-%license %{_pkgdocdir}/COPYING
-%{_libdir}/lib*.so.0*
-
 %files devel
 %dir %{_includedir}/lzma
 %{_includedir}/lzma/*.h
@@ -173,6 +144,9 @@ LD_LIBRARY_PATH=$PWD/src/liblzma/.libs make check
 %{_mandir}/man1/*lz*
 
 %changelog
+* Thu Jul 09 2015 Pavel Raiskup <praiskup@redhat.com> - 5.2.1-3
+- remove xz-compat-libs as it is not necessary (#1179193)
+
 * Fri Jun 19 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 5.2.1-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
 
