@@ -6,7 +6,7 @@
 Summary:	LZMA compression utilities
 Name:		xz
 Version:	5.2.0
-Release:	1%{?dist}
+Release:	2%{?dist}
 
 # Scripts xz{grep,diff,less,more} and symlinks (copied from gzip) are
 # GPLv2+, binaries are Public Domain (linked against LGPL getopt_long but its
@@ -23,6 +23,11 @@ Source101:	colorxzgrep.csh
 
 URL:		http://tukaani.org/%{name}/
 Requires:	%{name}-libs%{?_isa} = %{version}-%{release}
+
+# For /usr/libexec/grepconf.sh (RHBZ#1189120).
+# Unfortunately F21 has a newer version of grep which doesn't
+# have grepconf, but we're only concerned with F22 here.
+Requires:       grep >= 2.20-5
 
 
 %description
@@ -168,6 +173,9 @@ LD_LIBRARY_PATH=$PWD/src/liblzma/.libs make check
 %{_mandir}/man1/*lz*
 
 %changelog
+* Wed Feb 04 2015 Richard W.M. Jones <rjones@redhat.com> - 5.2.0-2
+- Depend on grep that contains grepconf.sh (#1189120)
+
 * Tue Dec 23 2014 Pavel Raiskup <praiskup@redhat.com> - 5.2.0-1
 - rebase per upstream release notes (#1023718)
   http://www.mail-archive.com/xz-devel@tukaani.org/msg00216.html
