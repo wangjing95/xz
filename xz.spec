@@ -174,7 +174,7 @@ LD_LIBRARY_PATH=$PWD/src/liblzma/.libs make check
 
 %changelog
 * Fri Feb 27 2015 Pavel Raiskup <praiskup@redhat.com> - 5.2.1-1
-- bugfix rebase to 5.2.1 (rhbz#1196786), per release notes
+- bugfix rebase to 5.2.1, per release notes
   http://www.mail-archive.com/xz-devel@tukaani.org/msg00226.html
 
 * Wed Feb 04 2015 Richard W.M. Jones <rjones@redhat.com> - 5.2.0-2
