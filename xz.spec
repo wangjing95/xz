@@ -6,7 +6,7 @@
 Summary:	LZMA compression utilities
 Name:		xz
 Version:	5.2.1
-Release:	1%{?dist}
+Release:	2%{?dist}
 
 # Scripts xz{grep,diff,less,more} and symlinks (copied from gzip) are
 # GPLv2+, binaries are Public Domain (linked against LGPL getopt_long but its
@@ -173,6 +173,9 @@ LD_LIBRARY_PATH=$PWD/src/liblzma/.libs make check
 %{_mandir}/man1/*lz*
 
 %changelog
+* Fri Jun 19 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 5.2.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_23_Mass_Rebuild
+
 * Fri Feb 27 2015 Pavel Raiskup <praiskup@redhat.com> - 5.2.1-1
 - bugfix rebase to 5.2.1, per release notes
   http://www.mail-archive.com/xz-devel@tukaani.org/msg00226.html
