@@ -1,0 +1,2 @@
+sources:
+	spectool -g *.spec
